@@ -40,8 +40,7 @@ component displayname=""  {
 
 		REQUEST.response = {
 			statusCode = 200,
-			headers = {},
-			data = {}
+			headers = {}
 		};
 	} // close onRequestStart
 
