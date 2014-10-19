@@ -50,6 +50,9 @@ component displayname=""  {
 			if (structKeyExists(CGI,"PATH_INFO") && (doesControllerExist(listGetAt(CGI.PATH_INFO,1,"/")))) {
 
 				var _actionPrefix = CGI.REQUEST_METHOD;
+				if (structKeyExists(CGI,"X-HTTP-Method-Override")) {
+					_actionPrefix = CGI["X-HTTP-Method-Override"];
+				}
 
 				var _controllerName = listGetAt(CGI.PATH_INFO,1,"/");
 				var _action = "";
