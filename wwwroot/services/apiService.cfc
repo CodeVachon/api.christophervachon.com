@@ -84,14 +84,14 @@ component output="false" displayname=""  {
 		} else if (isStruct(ARGUMENTS.data)) {
 			string &= "{" & _newLineChar;
 			for (key in ARGUMENTS.data) {
-				string &= repeatString(_tabChar, ARGUMENTS.depth) & '"#lcase(key)#":#_spaceChar##parseToJSON(ARGUMENTS.data[key], ARGUMENTS.depth)#,' & _newLineChar;
+				string &= repeatString(_tabChar, ARGUMENTS.depth) & '"#lcase(key)#":#_spaceChar##this.parseToJSON(ARGUMENTS.data[key], ARGUMENTS.depth)#,' & _newLineChar;
 			}
 			string = reReplace(string,",$","","one");
 			string &= repeatString(_tabChar, ARGUMENTS.depth-1) & "},";
 		} else {
 			string &= "[" & _newLineChar;
 			for (key in ARGUMENTS.data) {
-				string &= repeatString(_tabChar, ARGUMENTS.depth) & '#parseToJSON(key, ARGUMENTS.depth)#,' & _newLineChar;
+				string &= repeatString(_tabChar, ARGUMENTS.depth) & '#this.parseToJSON(key, ARGUMENTS.depth)#,' & _newLineChar;
 			}
 			string = reReplace(string,",$","","one");
 			string &= repeatString(_tabChar, ARGUMENTS.depth-1) & "],";
