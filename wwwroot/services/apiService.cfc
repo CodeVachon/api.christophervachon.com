@@ -8,18 +8,19 @@
 
 component output="false" displayname=""  {
 
-	public function init(){
-		return this;
-	}
+	public function init() { return this; }
 
-	public any function formatResponse(required any result, required array fields) {
+
+	public any function formatResponse(required any result, array fields = []) {
 		var _response = javaCast("Null","");
+
 		if (isSimpleValue(ARGUMENTS.result)) {
+			// no formatting required, return as is 
 			return ARGUMENTS.result;
 		} else if (isObject(ARGUMENTS.result) || isStruct(ARGUMENTS.result)) {
 			_response = {};
 			if (isObject(ARGUMENTS.result)) {
-				if (arrayIsEmpty(ARGUMENTS.fields)) { ARGUMENTS.fields = ["id"]; }
+				if (arrayIsEmpty(ARGUMENTS.fields)) { ARGUMENTS.fields = ["id"]; } // if no specific fields are asked for, return the object id 
 				for (var _key in ARGUMENTS.fields) {
 					var _propertyName = listGetAt(_key,1,".");
 					if (ARGUMENTS.result.hasProperty(_propertyName)) {
@@ -27,61 +28,77 @@ component output="false" displayname=""  {
 						if (isSimpleValue(_propertyValue)) {
 							_response[_propertyName] = _propertyValue;
 						} else {
-							_response[_propertyName] = this.formatResponse(_propertyValue,listToArray(_key, "."));
+							var _thisValuesFields = listToArray(_key, ".");
+							ArrayDeleteAt(_thisValuesFields, 1); // remove the propertyName from the array
+							_response[_propertyName] = this.formatResponse(_propertyValue,_thisValuesFields);
 						}
-					}
+					} else {
+						_response[_propertyName] = "unknown property";
+					} // close if (ARGUMENTS.result.hasProperty(_propertyName))
+				} // close for (var _key in ARGUMENTS.fields) 
+			} else { // close if is Object
+				for (var _structKey in ARGUMENTS.result) {
+					_response[_structKey] = this.formatResponse(_thing,ARGUMENTS.fields);
 				}
-			} else {
-				_response.message = "This is a structure";
-			}
-		} else { // must be an array
+			} // close if is Object -- else
+		} else { 
+			// must be an array
 			_response = [];
 			for (var _thing in ARGUMENTS.result) {
 				arrayAppend(_response, this.formatResponse(_thing,ARGUMENTS.fields));
 			}
-		}
+		} // close if ARGUMENTS.result type
 
 		return _response;
+	} // close formatResponse
 
-		/*
-		var response = [];
-		for (var _article in articleList) {
-			var _articleData = {};
-			for (var _property in _properties) {
-				var _propertyName = listGetAt(_property, 1, ".");
-				if (_article.hasProperty(_propertyName)) {
-					var _value = _article.getProperty(_propertyName);
-					if (isSimpleValue(_value)) {
-						_articleData[_property] = _value;
-					} else if (isArray(_value)) {
-						var _values = [];
-						for (var _thisValue in _value) {
-							if (isObject(_thisValue)) {
-								if (listLen(_property,".") > 1) {
-									var _subProperties = listToArray(_property,".");
-									var _generatedValues = {};
-									for (var _subProperty in _subProperties) {
-										if (_thisValue.hasProperty(_subProperty)) {
-											if (isSimpleValue(_thisValue.getProperty(_subProperty))) {
-												_generatedValues[_subProperty] = _thisValue.getProperty(_subProperty);
-											}
-										}
-									}
-									arrayAppend(_values, _generatedValues);
-								} else {
-									arrayAppend(_values, _thisValue.getId());
-								}
-							} else {
-								arrayAppend(_values, _thisValue);
-							}
-						} // close for (var _thisValue in _value) 
-						_articleData[_propertyName] = _values;
-					} // close isArray(_value)
-				} // close if _article.hasProperty
-			} // close for (var _property in _properties)
 
-			arrayAppend(response, _articleData);
-		} // close for (var _article in articleList)
-		*/
-	}
-}
+	public string function parseToJSON(any data, numeric depth = 0, boolean pretty = true) {
+		ARGUMENTS.depth++;
+
+		if (ARGUMENTS.pretty) {
+			_tabChar = "   ";
+			_spaceChar = " ";
+			_newLineChar = chr(10);
+		} else {
+			_tabChar = "";
+			_spaceChar = "";
+			_newLineChar = "";
+		}
+
+		string = "";
+		if (isSimpleValue(ARGUMENTS.data)) {
+			if (isNumeric(ARGUMENTS.data)) {
+				string = ARGUMENTS.data;
+			} else if (isBoolean(ARGUMENTS.data)) {
+				if (ARGUMENTS.data) {
+					string = 'true';
+				} else {
+					string = 'false';
+				}
+			} else if (isDate(ARGUMENTS.data)) {
+				string = '"#GetHttpTimeString(ARGUMENTS.data)#"';
+			} else {
+				string = '"#JSStringFormat(ARGUMENTS.data)#"';
+			}
+		} else if (isStruct(ARGUMENTS.data)) {
+			string &= "{" & _newLineChar;
+			for (key in ARGUMENTS.data) {
+				string &= repeatString(_tabChar, ARGUMENTS.depth) & '"#lcase(key)#":#_spaceChar##parseToJSON(ARGUMENTS.data[key], ARGUMENTS.depth)#,' & _newLineChar;
+			}
+			string = reReplace(string,",$","","one");
+			string &= repeatString(_tabChar, ARGUMENTS.depth-1) & "},";
+		} else {
+			string &= "[" & _newLineChar;
+			for (key in ARGUMENTS.data) {
+				string &= repeatString(_tabChar, ARGUMENTS.depth) & '#parseToJSON(key, ARGUMENTS.depth)#,' & _newLineChar;
+			}
+			string = reReplace(string,",$","","one");
+			string &= repeatString(_tabChar, ARGUMENTS.depth-1) & "],";
+		}
+		string = reReplace(string,",$","","one");
+		return string;
+	} // close parseToJSON
+
+
+} // close component
