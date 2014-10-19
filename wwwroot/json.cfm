@@ -3,7 +3,7 @@
 	param name='REQUEST.pretty' default=true;
 
 	if (REQUEST.pretty) {
-		_tabChar = "  ";
+		_tabChar = "   ";
 		_spaceChar = " ";
 		_newLineChar = chr(10);
 	} else {
