@@ -32,20 +32,36 @@ component output="false" displayname=""  {
 		for (var _article in articleList) {
 			var _articleData = {};
 			for (var _property in _properties) {
-				if (_property == "tags") {
-					var _tags = [];
-					for (var _tag in _article.getTags()) {
-						arrayAppend(_tags, {
-							id = _tag.getId(),
-							name = _tag.getName()
-						});
-					}
-					_articleData[_property] = _tags;
-				} else {
-					if (_article.hasProperty(_property)) {
-						_articleData[_property] = _article.getProperty(_property);
-					}
-				}
+				var _propertyName = listGetAt(_property, 1, ".");
+				if (_article.hasProperty(_propertyName)) {
+					var _value = _article.getProperty(_propertyName);
+					if (isSimpleValue(_value)) {
+						_articleData[_property] = _value;
+					} else if (isArray(_value)) {
+						var _values = [];
+						for (var _thisValue in _value) {
+							if (isObject(_thisValue)) {
+								if (listLen(_property,".") > 1) {
+									var _subProperties = listToArray(_property,".");
+									var _generatedValues = {};
+									for (var _subProperty in _subProperties) {
+										if (_thisValue.hasProperty(_subProperty)) {
+											if (isSimpleValue(_thisValue.getProperty(_subProperty))) {
+												_generatedValues[_subProperty] = _thisValue.getProperty(_subProperty);
+											}
+										}
+									}
+									arrayAppend(_values, _generatedValues);
+								} else {
+									arrayAppend(_values, _thisValue.getId());
+								}
+							} else {
+								arrayAppend(_values, _thisValue);
+							}
+						} // close for (var _thisValue in _value) 
+						_articleData[_propertyName] = _values;
+					} // close isArray(_value)
+				} // close if _article.hasProperty
 			} // close for (var _property in _properties)
 
 			arrayAppend(response, _articleData);
