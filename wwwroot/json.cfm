@@ -27,7 +27,7 @@
 			} else if (isDate(ARGUMENTS.data)) {
 				string = '"#GetHttpTimeString(ARGUMENTS.data)#"';
 			} else {
-				string = '"#HTMLEditFormat(ARGUMENTS.data)#"';
+				string = '"#JSStringFormat(ARGUMENTS.data)#"';
 			}
 		} else if (isStruct(ARGUMENTS.data)) {
 			string &= "{" & _newLineChar;

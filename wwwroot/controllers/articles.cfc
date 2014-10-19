@@ -73,6 +73,7 @@ component output="false" displayname=""  {
 				id = _article.getId(),
 				title = _article.getTitle(),
 				summary = _article.getSummary(),
+				body = _article.getBody(),
 				pubDate = _article.getPublicationDate(),
 				tags = _tags
 			};
