@@ -21,21 +21,28 @@ component output="false" displayname=""  {
 			_response = {};
 			if (isObject(ARGUMENTS.result)) {
 				if (arrayIsEmpty(ARGUMENTS.fields)) { ARGUMENTS.fields = ["id"]; } // if no specific fields are asked for, return the object id 
-				for (var _key in ARGUMENTS.fields) {
-					var _propertyName = listGetAt(_key,1,".");
-					if (ARGUMENTS.result.hasProperty(_propertyName)) {
-						var _propertyValue = ARGUMENTS.result.getProperty(_propertyName);
-						if (isSimpleValue(_propertyValue)) {
-							_response[_propertyName] = _propertyValue;
+				
+				if ((arrayLen(ARGUMENTS.fields) == 1) && (ARGUMENTS.fields[1] == "id")) {
+					return ARGUMENTS.result.getId();
+				} else {
+					for (var _key in ARGUMENTS.fields) {
+						var _propertyName = listGetAt(_key,1,".");
+						if (ARGUMENTS.result.hasProperty(_propertyName)) {
+							var _propertyValue = ARGUMENTS.result.getProperty(_propertyName);
+							if (isSimpleValue(_propertyValue)) {
+								_response[_propertyName] = _propertyValue;
+							} else {
+								var _thisValuesFields = listToArray(_key, ".");
+								ArrayDeleteAt(_thisValuesFields, 1); // remove the propertyName from the array
+								_response[_propertyName] = this.formatResponse(_propertyValue,_thisValuesFields);
+							}
 						} else {
-							var _thisValuesFields = listToArray(_key, ".");
-							ArrayDeleteAt(_thisValuesFields, 1); // remove the propertyName from the array
-							_response[_propertyName] = this.formatResponse(_propertyValue,_thisValuesFields);
-						}
-					} else {
-						_response[_propertyName] = "unknown property";
-					} // close if (ARGUMENTS.result.hasProperty(_propertyName))
-				} // close for (var _key in ARGUMENTS.fields) 
+							_response[_propertyName] = "unknown property";
+						} // close if (ARGUMENTS.result.hasProperty(_propertyName))
+					} // close for (var _key in ARGUMENTS.fields) 
+				}
+
+
 			} else { // close if is Object
 				for (var _structKey in ARGUMENTS.result) {
 					_response[_structKey] = this.formatResponse(_thing,ARGUMENTS.fields);
