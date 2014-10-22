@@ -8,9 +8,7 @@
 
 component displayname=""  {
 
-	this.name = 'ChristopherVachonVr0.0.1';
-	this.sessionManagement = true;
-	this.sessionTimeout = CreateTimespan(0,0,20,0);
+	this.name = 'ChristopherVachonAPIVr0.0.1';
 
 	this.datasource = "cmv";
 	this.ormEnabled = true;
@@ -55,11 +53,16 @@ component displayname=""  {
 
 				var _controllerName = listGetAt(CGI.PATH_INFO,1,"/");
 				var _action = "";
-				if (listLen(CGI.PATH_INFO,"/") == 1) {
-					_action = "list";
-				}
-				if (listLen(CGI.PATH_INFO,"/") == 2) {
-					_action = "view";
+
+				if (_controllerName == "echo") {
+					_action = "echo";
+				} else {
+					if (listLen(CGI.PATH_INFO,"/") == 1) {
+						_action = "list";
+					}
+					if (listLen(CGI.PATH_INFO,"/") == 2) {
+						_action = "view";
+					}
 				}
 
 				_action = _actionPrefix & "_" & _action;

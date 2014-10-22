@@ -1,6 +1,6 @@
 /**
 *
-* @file  /Users/Christopher/Documents/sites/api.christophervachon.com/wwwroot/controllers/articles.cfc
+* @file  /REST/controllers/articles.cfc
 * @author  
 * @description
 *
