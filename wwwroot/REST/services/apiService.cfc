@@ -45,7 +45,7 @@ component output="false" displayname=""  {
 
 			} else { // close if is Object
 				for (var _structKey in ARGUMENTS.result) {
-					_response[_structKey] = this.formatResponse(_thing,ARGUMENTS.fields);
+					_response[_structKey] = this.formatResponse(ARGUMENTS.result[_structKey],ARGUMENTS.fields);
 				}
 			} // close if is Object -- else
 		} else { 
