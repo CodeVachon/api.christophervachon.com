@@ -12,9 +12,6 @@ component output="false" displayname=""  {
 	VARIABLES.markdownProcessor = javaCast("null","");
 
 	public function init(){
-		//VARIABLES.javaloader = createObject("component", "javaloader.JavaLoader").init(loadpaths=["#expandPath('bin/markdownj-1.0.2b4-0.3.0.jar')#"],  loadColdFusionClassPath=true);
-		//VARIABLES.markdownProcessor = VARIABLES.javaloader.create("com.petebevin.markdown.MarkdownProcessor").init();
-
 		var paths = [
 			"#expandPath('bin/parboiled-java-1.1.5.jar')#",
 			"#expandPath('bin/asm-all-4.0.jar')#",
@@ -29,6 +26,16 @@ component output="false" displayname=""  {
 	}
 
 	public string function convertToHtml(required string markdown) {
-		return VARIABLES.markdownProcessor.markdownToHtml(ARGUMENTS.markdown);
+		var _html = this.getPegDown().markdownToHtml(ARGUMENTS.markdown);
+		_html = replaceNoCase(_html,"<table>","<table class='table table-bordered'>","all");
+		return _html;
+	}
+
+	public any function getJavaLoader() {
+		return VARIABLES.javaloader;
+	}
+
+	public any function getPegDown() {
+		return VARIABLES.markdownProcessor;
 	}
 }

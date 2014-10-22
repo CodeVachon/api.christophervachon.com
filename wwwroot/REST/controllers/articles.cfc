@@ -46,7 +46,7 @@ component output="false" displayname=""  {
 	/**
 	* @method 	View
 	* @action 	Get
-	* @description 	Gets Details of a Specific Article.  I wonder what happens if I need to use a new line
+	* @hint 	Gets Details of a Specific Article.  I wonder what happens if I need to use a new line
 	* @use 		/REST/articles/[articleId]
 	*/
 	public function get_view(args) {
