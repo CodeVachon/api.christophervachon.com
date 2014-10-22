@@ -17,7 +17,12 @@ component output="false" displayname=""  {
 		return this;
 	} // close init
 
-
+	/**
+	* @method 	List
+	* @action 	Get
+	* @hint 	Lists out articles
+	* @use 		/articles/
+	*/
 	public function get_list(args) {
 		var _serArgs = {};
 		_serArgs.page = ((structKeyExists(args,"page"))?args.page:1);
@@ -38,6 +43,12 @@ component output="false" displayname=""  {
 	} // close get_list
 
 
+	/**
+	* @method 	View
+	* @action 	Get
+	* @description 	Gets Details of a Specific Article.  I wonder what happens if I need to use a new line
+	* @use 		/articles/[articleId]
+	*/
 	public function get_view(args) {
 		var _serArgs = {
 			articleId = args.objectId
