@@ -2,7 +2,7 @@
 *
 * @file  /Users/Christopher/Documents/sites/api.christophervachon.com/wwwroot/docs/services/markdownService.cfc
 * @author  
-* @description
+* @description More info on PegDown: http://www.decodified.com/pegdown/api/
 *
 */
 

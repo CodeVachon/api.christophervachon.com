@@ -1,5 +1,5 @@
 <cfscript>
-	LOCAL.controller = createObject( 'component', "controllers." & RC.controllerName).init();
+	LOCAL.controller = createObject( 'component', "rest.controllers." & RC.controllerName).init();
 
 	LOCAL.controllerFunctions = GetMetaData(LOCAL.controller).functions;
 	LOCAL.controllerMethods = {};

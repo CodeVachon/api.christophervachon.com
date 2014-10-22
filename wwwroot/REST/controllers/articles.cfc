@@ -12,8 +12,8 @@ component output="false" displayname=""  {
 	VARIABLES.articleService = javaCast("null","");
 
 	public function init() {
-		this.apiService = new services.apiService();
-		this.articleService = new services.articleService();
+		this.apiService = new REST.services.apiService();
+		this.articleService = new REST.services.articleService();
 		return this;
 	} // close init
 
@@ -21,7 +21,7 @@ component output="false" displayname=""  {
 	* @method 	List
 	* @action 	Get
 	* @hint 	Lists out articles
-	* @use 		/articles/
+	* @use 		/REST/articles/
 	*/
 	public function get_list(args) {
 		var _serArgs = {};
@@ -47,7 +47,7 @@ component output="false" displayname=""  {
 	* @method 	View
 	* @action 	Get
 	* @description 	Gets Details of a Specific Article.  I wonder what happens if I need to use a new line
-	* @use 		/articles/[articleId]
+	* @use 		/REST/articles/[articleId]
 	*/
 	public function get_view(args) {
 		var _serArgs = {

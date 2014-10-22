@@ -20,7 +20,7 @@
 					<cfif LOCAL.isThisActive>
 						#LOCAL.fileName#
 					<cfelse>
-						<a href='/docs/on/#LOCAL.fileName#'>#LOCAL.fileName#</a>
+						<a href='/docs/#LOCAL.fileName#'>#LOCAL.fileName#</a>
 					</cfif>
 				</li>
 			</cfloop>
