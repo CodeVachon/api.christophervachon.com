@@ -15,10 +15,8 @@
 	LOCAL.keysSorted = structKeyArray(LOCAL.controllerMethods);
 	arraySort(LOCAL.keysSorted, "textnocase", "asc");
 
-	LOCAL.mdService = new services.markdownService();
-
 	if (fileExists(expandPath("markdown/#RC.controllerName#/info.md"))) {
-		LOCAL.header = LOCAL.mdService.convertToHtml(  fileRead(expandPath("markdown/#RC.controllerName#/info.md"))  );
+		LOCAL.header = APPLICATION.mdParser.convertToHtml(  fileRead(expandPath("markdown/#RC.controllerName#/info.md"))  );
 		LOCAL.header &= "<hr />";
 	} else {
 		LOCAL.header = "<h2 class='text-capitalize'>#RC.controllerName#</h2>";
@@ -47,7 +45,7 @@
 				<cfscript>
 					LOCAL.additionalContent = "";
 					if (fileExists(expandPath("markdown/#RC.controllerName#/#LOCAL.key#.md"))) {
-						LOCAL.additionalContent = LOCAL.mdService.convertToHtml(  fileRead(expandPath("markdown/#RC.controllerName#/#LOCAL.key#.md"))  );
+						LOCAL.additionalContent = APPLICATION.mdParser.convertToHtml(  fileRead(expandPath("markdown/#RC.controllerName#/#LOCAL.key#.md"))  );
 						writeOutput("<hr>");
 					}
 					writeOutput(LOCAL.additionalContent);

@@ -27,7 +27,7 @@ component output="false" displayname=""  {
 
 	public string function convertToHtml(required string markdown) {
 		var _html = this.getPegDown().markdownToHtml(ARGUMENTS.markdown);
-		_html = replaceNoCase(_html,"<table>","<table class='table table-bordered'>","all");
+		_html = replaceNoCase(_html,"<table>","<table class='table'>","all");
 		return _html;
 	}
 

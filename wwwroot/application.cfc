@@ -22,6 +22,10 @@ component extends="framework.framework1" {
 	
 	function setupRequest() {
 		REQUEST.CONTEXT.controllerPath = expandPath('/REST/controllers');
+
+		if (isFrameworkReloadRequest() || (!structKeyExists(APPLICATION, "mdParser"))) {
+			APPLICATION.mdParser = new services.markdownService();
+		}
 	}
 
 	function setupApplication() {

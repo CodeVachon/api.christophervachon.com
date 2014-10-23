@@ -1,5 +1,3 @@
 <cfscript>
-	LOCAL.mdService = new services.markdownService();
-
-	writeOutput(LOCAL.mdService.convertToHtml("## Header Tag"));
+	writeOutput(APPLICATION.mdParser.convertToHtml("## Header Tag"));
 </cfscript>
